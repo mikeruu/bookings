@@ -1,278 +1,46 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <title>My Nice Page</title>
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/css/datepicker-bs4.min.css">    
-    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
-    <link rel="stylesheet" href="static/css/styles.css" class="stylesheet" type="text/css">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2113.2">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #0000e9; -webkit-text-stroke: #0000e9}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p4 {margin: 0.0px 0.0px 6.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000; min-height: 14.0px}
+    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85)}
+    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #000000; -webkit-text-stroke: #000000}
+    li.li1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; color: #0000e9; -webkit-text-stroke: #0000e9}
+    span.s1 {text-decoration: underline ; font-kerning: none}
+    span.s2 {-webkit-text-stroke: 0px #000000}
+    span.s3 {font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+    span.s4 {text-decoration: underline ; font-kerning: none; color: #0000e9; -webkit-text-stroke: 0px #0000e9}
+    span.s5 {font-kerning: none}
+    span.s6 {font-kerning: none; background-color: #b3b3b3}
+    span.s7 {font: 12.0px Times; font-kerning: none; color: #000000; -webkit-text-stroke: 0px #000000}
+    ul.ul1 {list-style-type: disc}
+  </style>
 </head>
-
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="about.html">About</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Rooms
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="generals.html">General's Quarters</a>
-                    <a class="dropdown-item" href="majors.html">Major's Suite</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="reservation.html">Book Now</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="contact.html">Contact</a>
-            </li>
-
-        </ul>
-    </div>
-</nav>
-
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <h1 class="mt-3">Search for Availability</h1>
-
-            <form action="reservation.html" method="post" novalidate class="needs-validation">
-                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
-                <div class="row">
-                    <div class="col">
-                        <div class="row" id="reservation-dates">
-                            <div class="col-md-6">
-                                <input required class="form-control" type="text" name="start" placeholder="Arrival">
-                            </div>
-                            <div class="col-md-6">
-                                <input required class="form-control" type="text" name="end" placeholder="Departure">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-
-                <button type="submit" class="btn btn-primary">Search Availability</button>
-
-            </form>
-        </div>
-    </div>
-
-</div>
-
-<footer class="my-footer">
-    <div class="row">
-        <div class="col">
-            left
-        </div>
-
-        <div class="col">
-            center
-        </div>
-
-        <div class="col">
-            right
-        </div>
-    </div>
-</footer>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
-<script src="https://unpkg.com/notie"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.js"></script>
-
-<script>
-  let attention = Prompt();
-
-  (function() {
-      'use strict';
-      window.addEventListener('load', function() {
-          // Fetch all the forms we want to apply custom Bootstrap validation styles to
-          let forms = document.getElementsByClassName('needs-validation');
-          // Loop over them and prevent submission
-          Array.prototype.filter.call(forms, function(form) {
-              form.addEventListener('submit', function(event) {
-                  if (form.checkValidity() === false) {
-                      event.preventDefault();
-                      event.stopPropagation();
-                  }
-                  form.classList.add('was-validated');
-              }, false);
-          });
-      }, false);
-  })();
-
-  document.getElementById("colorButton").addEventListener("click", function () {
-      let html = `
-      <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
-        <div class="form-row">
-          <div class="col">
-            <div class="form-row" id="reservation-dates-modal">
-              <div class="col">
-                <input disabled required class="form-control" type="text" name="start" id="start" placeholder="Arrival">
-              </div>
-              <div class="col">
-                <input disabled required class="form-control" type="text" name="end" id="end" placeholder="Departure">
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </form>
-      `
-
-    
-      attention.custom({msg: html, icon: "error", title: "Choose your dates"});
-  })
-
-  const elem = document.getElementById('reservation-dates');
-  const rangePicker = new DateRangePicker(elem, {
-      format: "yyyy-mm-dd",
-  });
-
-  function notify(msg, msgType) {
-      notie.alert({
-          type: msgType,
-          text: msg,
-      })
-  }
-
-  function notifyModal(title, text ,icon, confirmationButtonText){
-      Swal.fire({
-          title: title,
-          html: text,
-          icon: icon,
-          confirmButtonText: confirmationButtonText
-      })
-  }
-//This allows to use the sweetalert as a module for passing different options
-  function Prompt(){
-    let toast = function(c) {
-      const {
-        msg = "",
-        icon = "success",
-        position = "top-end",
-
-      } = c;
-      const Toast = Swal.mixin({
-      toast: true,
-      title: msg,
-      position: position,
-      icon: icon,
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      didOpen: (toast) => {
-        toast.addEventListener('mouseenter', Swal.stopTimer)
-        toast.addEventListener('mouseleave', Swal.resumeTimer)
-      }
-    })
-
-    Toast.fire({})
-    }
-    let success = function(c){
-      const {
-        msg = "",
-        title = "",
-        footer = "",
-      } = c;
-      Swal.fire({
-        icon: 'success',
-        title: title,
-        text: msg,
-        footer: footer
-      })
-    }
-    let error = function(c){
-      const {
-        msg = "",
-        title = "",
-        footer = "",
-      } = c;
-      Swal.fire({
-        icon: 'error',
-        title: title,
-        text: msg,
-        footer: footer
-      })
-    }
-   async function custom(c){
-      const {
-        msg = "",
-        title = "",
-
-      } = c;
-      const { value: formValues } = await Swal.fire({
-  title: title,
-  html: msg,
-  backdrop: false,
-  focusConfirm: false,
-  showCancelButton: true,
-  willOpen: () => {
-    const elem = document.getElementById("reservation-dates-modal");
-    const rp = new DateRangePicker(elem, {
-      format: 'yyyy-mm-dd',
-      showOnFocus: true,
-    })
-  },
-  preConfirm: () => {
-    return [
-      document.getElementById('start').value,
-      document.getElementById('end').value
-    ]
-  },
-  didOpen: () => {
-    document.getElementById('start').removeAttribute('disabled');
-    document.getElementById('end').removeAttribute('disabled');
-  }
-})
-
-if (formValues) {
-  Swal.fire(JSON.stringify(formValues))
-}
-    }
-
-    return {
-      toast: toast,
-      success: success,
-      error: error,
-      custom: custom,
-    }
-  }
-
-</script>
-
+<p class="p1"><span class="s1">Navbar</span></p>
+<ul class="ul1">
+  <li class="li1"><span class="s2"><a href="file:///Users/migu4903/projects/go-course/bookings-mine/html-source/index.html"><span class="s1">Home (current)</span></a></span><span class="s3"><span class="Apple-converted-space"> </span></span></li>
+  <li class="li1"><span class="s2"><a href="file:///Users/migu4903/projects/go-course/bookings-mine/html-source/about.html"><span class="s1">About</span></a></span><span class="s3"><span class="Apple-converted-space"> </span></span></li>
+  <li class="li1"><span class="s2"></span><span class="s1">Rooms <a href="file:///Users/migu4903/projects/go-course/bookings-mine/html-source/generals.html">General's Quarters</a></span><span class="s3"> <a href="file:///Users/migu4903/projects/go-course/bookings-mine/html-source/majors.html"><span class="s4">Major's Suite</span></a> <br>
+</span></li>
+  <li class="li1"><span class="s2"><a href="file:///Users/migu4903/projects/go-course/bookings-mine/html-source/reservation.html"><span class="s1">Book Now</span></a></span><span class="s3"><span class="Apple-converted-space"> </span></span></li>
+  <li class="li1"><span class="s2"><a href="file:///Users/migu4903/projects/go-course/bookings-mine/html-source/contact.html"><span class="s1">Contact</span></a></span><span class="s3"><span class="Apple-converted-space"> </span></span></li>
+</ul>
+<p class="p2"><span class="s5"></span><br></p>
+<h1 style="margin: 0.0px 0.0px 16.1px 0.0px; font: 24.0px Times; color: #000000; -webkit-text-stroke: #000000"><span class="s5"><b>Search for Availability</b></span></h1>
+<p class="p2"><span class="s5"></span><br></p>
+<p class="p2"><span class="s5"></span><br></p>
+<p class="p4"><span class="s5"></span><br></p>
+<p class="p5"><span class="s6">Search Availability</span><span class="s7"><span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s5">left<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s5">center<span class="Apple-converted-space"> </span></span></p>
+<p class="p6"><span class="s5">right<span class="Apple-converted-space"> </span></span></p>
 </body>
-
 </html>

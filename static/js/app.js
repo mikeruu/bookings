@@ -1,10 +1,10 @@
+// Prompt is our JavaScript module for all alerts, notifications, and custom popup dialogs
 function Prompt() {
     let toast = function (c) {
-        const{
-            msg = '',
-            icon = 'success',
-            position = 'top-end',
-
+        const {
+            msg = "",
+            icon = "success",
+            position = "top-end",
         } = c;
 
         const Toast = Swal.mixin({
@@ -29,7 +29,7 @@ function Prompt() {
             msg = "",
             title = "",
             footer = "",
-        } = c
+        } = c;
 
         Swal.fire({
             icon: 'success',
@@ -37,7 +37,6 @@ function Prompt() {
             text: msg,
             footer: footer,
         })
-
     }
 
     let error = function (c) {
@@ -45,7 +44,7 @@ function Prompt() {
             msg = "",
             title = "",
             footer = "",
-        } = c
+        } = c;
 
         Swal.fire({
             icon: 'error',
@@ -53,7 +52,6 @@ function Prompt() {
             text: msg,
             footer: footer,
         })
-
     }
 
     async function custom(c) {
@@ -61,10 +59,10 @@ function Prompt() {
             icon = "",
             msg = "",
             title = "",
-            showConfirmButton = "true"
+            showConfirmButton = true,
         } = c;
 
-        const { value: result } = await Swal.fire({
+        const {value: result} = await Swal.fire({
             icon: icon,
             title: title,
             html: msg,
@@ -73,37 +71,32 @@ function Prompt() {
             showCancelButton: true,
             showConfirmButton: showConfirmButton,
             willOpen: () => {
-              if (c.willOpen !== undefined) {
-                c.willOpen();
-              }
+                if (c.willOpen !== undefined) {
+                    c.willOpen();
+                }
             },
             didOpen: () => {
-              if (c.didOpen !== undefined) {
-                c.didOpen();
-              }
-            },
-            preConfirm: () => {
-                return [
-                    document.getElementById('start').value,
-                    document.getElementById('end').value
-                ]
+                if (c.didOpen !== undefined) {
+                    c.didOpen();
+                }
             }
         })
 
         if (result) {
-          if (result.dismiss !== Swal.DismissReason.cancel){
-            if (result.value !== ""){
-              if (c.callback !== undefined) {
-                c.callback(result);
-              }
+            if (result.dismiss !== Swal.DismissReason.cancel) {
+                if (result.value !== "") {
+                    if (c.callback !== undefined) {
+                        c.callback(result);
+                    }
+                } else {
+                    c.callback(false);
+                }
             } else {
-              c.callback(false);
+                c.callback(false);
             }
-          } else {
-            c.callback(false);
-          }
         }
-      }
+    }
+
 
     return {
         toast: toast,

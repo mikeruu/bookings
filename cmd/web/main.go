@@ -2,20 +2,20 @@ package main
 
 import (
 	"encoding/gob"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"time"
 
-	"github.com/mikeruu/bookings/internal/config"
-	"github.com/mikeruu/bookings/internal/driver"
-	"github.com/mikeruu/bookings/internal/handlers"
-	"github.com/mikeruu/bookings/internal/helpers"
-	"github.com/mikeruu/bookings/internal/models"
-	"github.com/mikeruu/bookings/internal/render"
-
 	"github.com/alexedwards/scs/v2"
+	"github.com/tsawler/bookings/internal/config"
+	"github.com/tsawler/bookings/internal/driver"
+	"github.com/tsawler/bookings/internal/handlers"
+	"github.com/tsawler/bookings/internal/helpers"
+	"github.com/tsawler/bookings/internal/models"
+	"github.com/tsawler/bookings/internal/render"
 )
 
 const portNumber = ":8080"
@@ -25,7 +25,7 @@ var session *scs.SessionManager
 var infoLog *log.Logger
 var errorLog *log.Logger
 
-// main is the main function
+// main is the main application function
 func main() {
 	db, err := run()
 	if err != nil {
@@ -33,23 +33,52 @@ func main() {
 	}
 	defer db.SQL.Close()
 
-	fmt.Println(fmt.Sprintf("Staring application on port %s", portNumber))
+	defer close(app.MailChan)
+
+	fmt.Println("Starting Mail listener....")
+	listenForMail()
+
+	fmt.Println(fmt.Sprintf("Starting application on port %s", portNumber))
+
 	srv := &http.Server{
 		Addr:    portNumber,
 		Handler: routes(&app),
 	}
+
 	err = srv.ListenAndServe()
 	log.Fatal(err)
 }
 
 func run() (*driver.DB, error) {
-	//What are we going to store in the session
+	// what am I going to put in the session
 	gob.Register(models.Reservation{})
 	gob.Register(models.User{})
 	gob.Register(models.Room{})
 	gob.Register(models.Restriction{})
+	gob.Register(map[string]int{})
 
-	app.InProduction = false
+	//read flags from cmd line
+	inProduction := flag.Bool("production", true, "Application is in production")
+	useCache := flag.Bool("cache", true, "Use template cache")
+	dbName := flag.String("dbname", "", "Database name")
+	dbUser := flag.String("dbuser", "", "Database user")
+	dbPass := flag.String("dbpass", "", "Database Password")
+	dbPort := flag.String("dbport", "5432", "Database Port")
+	dbSSL := flag.String("dbssl", "disable", "Database SSL settings (disable, prefer, require)")
+	dbHost := flag.String("dbhost", "localhost", "Database host")
+
+	flag.Parse()
+	if *dbName == "" || *dbUser == "" {
+		fmt.Println("missing required flags")
+		os.Exit(1)
+	}
+
+	mailChan := make(chan models.MailData)
+	app.MailChan = mailChan
+
+	// change this to true when in production
+	app.InProduction = *inProduction
+	app.UseCache = *useCache
 
 	infoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	app.InfoLog = infoLog
@@ -65,14 +94,15 @@ func run() (*driver.DB, error) {
 
 	app.Session = session
 
-	//connect to database
-	log.Println("Connecting to database")
-	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=migu4903 password=")
+	// connect to database
+	log.Println("Connecting to database...")
+	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", *dbHost, *dbPort, *dbName, *dbUser, *dbPass, *dbSSL)
+	db, err := driver.ConnectSQL(connectionString)
 	if err != nil {
-		log.Fatal("Cannot connect to database")
-
+		log.Fatal("Cannot connect to database! Dying...")
 	}
-	log.Println("Connected to database successfully")
+	log.Println("Connected to database!")
+
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
@@ -80,7 +110,6 @@ func run() (*driver.DB, error) {
 	}
 
 	app.TemplateCache = tc
-	app.UseCache = false
 
 	repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(repo)

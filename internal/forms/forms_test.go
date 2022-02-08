@@ -1,7 +1,6 @@
 package forms
 
 import (
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -14,7 +13,7 @@ func TestForm_Valid(t *testing.T) {
 
 	isValid := form.Valid()
 	if !isValid {
-		t.Error("Got invalid when should have been valid")
+		t.Error("got invalid when should have been valid")
 	}
 }
 
@@ -24,7 +23,7 @@ func TestForm_Required(t *testing.T) {
 
 	form.Required("a", "b", "c")
 	if form.Valid() {
-		t.Error("form show valid when required fields missing")
+		t.Error("form shows valid when required fields missing")
 	}
 
 	postedData := url.Values{}
@@ -33,6 +32,7 @@ func TestForm_Required(t *testing.T) {
 	postedData.Add("c", "a")
 
 	r, _ = http.NewRequest("POST", "/whatever", nil)
+
 	r.PostForm = postedData
 	form = New(r.PostForm)
 	form.Required("a", "b", "c")
@@ -45,81 +45,84 @@ func TestForm_Has(t *testing.T) {
 	r := httptest.NewRequest("POST", "/whatever", nil)
 	form := New(r.PostForm)
 
-	has := form.Has("a")
+	has := form.Has("whatever")
 	if has {
-		t.Error("form show valid when it does not have the field")
+		t.Error("form shows has field when it does not")
 	}
 
 	postedData := url.Values{}
-	postedData.Add("a", "b")
-
-	r, _ = http.NewRequest("POST", "/whatever", nil)
-	r.PostForm = postedData
-	form = New(r.PostForm)
+	postedData.Add("a", "a")
+	form = New(postedData)
 
 	has = form.Has("a")
 	if !has {
-		t.Error("form show invalid when it does have the field")
+		t.Error("shows form does not have field when it should")
 	}
 }
 
-func TestForm_MinLenght(t *testing.T) {
-	postedData := url.Values{}
-	form := New(postedData)
+func TestForm_MinLength(t *testing.T) {
+	r := httptest.NewRequest("POST", "/whatever", nil)
+	form := New(r.PostForm)
 
-	form.MinLength("a", 20)
+	form.MinLength("x", 10)
 	if form.Valid() {
-		t.Error("form shows min lenght for non-existent field")
+		t.Error("form shows min length for non-existent field")
 	}
 
-	isError := form.Errors.Get("a")
+	isError := form.Errors.Get("x")
 	if isError == "" {
-		t.Error("should have an error but didng get one")
-
+		t.Error("should have an error, but did not get one")
 	}
 
-	postedData = url.Values{}
-	postedData.Add("a", "abcd")
-	form = New(postedData)
+	postedValues := url.Values{}
+	postedValues.Add("some_field", "some value")
+	form = New(postedValues)
 
-	fmt.Print(form)
-	minlen := form.MinLength("a", 200)
-	if minlen {
-		t.Error("Form shows  min lenght of 200 when data is shorter")
+	form.MinLength("some_field", 100)
+	if form.Valid() {
+		t.Error("shows minlength of 100 met when data is shorter")
 	}
 
-	postedData = url.Values{}
-	postedData.Add("another", "abc123")
+	postedValues = url.Values{}
+	postedValues.Add("another_field", "abc123")
+	form = New(postedValues)
 
-	form = New(postedData)
-	form.MinLength("another", 1)
+	form.MinLength("another_field", 1)
 	if !form.Valid() {
-		t.Error("shows min lenght of 1 is not met when ti is")
+		t.Error("shows minlength of 1 is not met when it is")
 	}
-	isError = form.Errors.Get("another")
-	if isError != "" {
-		t.Error("should not have an error but got one")
 
+	isError = form.Errors.Get("another_field")
+	if isError != "" {
+		t.Error("should not have an error, but got one")
 	}
 
 }
 
 func TestForm_IsEmail(t *testing.T) {
-	postedData := url.Values{}
-	form := New(postedData)
+	postedValues := url.Values{}
+	form := New(postedValues)
 
-	form.IsEmail("email")
-
+	form.IsEmail("x")
 	if form.Valid() {
-		t.Error("Showing valid email when it is not")
+		t.Error("form shows valid email for non-existent field")
 	}
-	postedData = url.Values{}
-	postedData.Add("email", "me@here.com")
-	form = New(postedData)
+
+	postedValues = url.Values{}
+	postedValues.Add("email", "me@here.com")
+	form = New(postedValues)
 
 	form.IsEmail("email")
 	if !form.Valid() {
-		t.Error("got an invalid email add when should not have")
+		t.Error("got an invalid email when we should not have")
 	}
 
+	postedValues = url.Values{}
+	postedValues.Add("email", "x")
+	form = New(postedValues)
+
+	form.IsEmail("email")
+	if form.Valid() {
+		t.Error("got valid for invalid email address")
+	}
 }

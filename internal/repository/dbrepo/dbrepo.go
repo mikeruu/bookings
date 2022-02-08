@@ -3,8 +3,8 @@ package dbrepo
 import (
 	"database/sql"
 
-	"github.com/mikeruu/bookings/internal/config"
-	"github.com/mikeruu/bookings/internal/repository"
+	"github.com/tsawler/bookings/internal/config"
+	"github.com/tsawler/bookings/internal/repository"
 )
 
 type postgresDBRepo struct {
@@ -23,7 +23,8 @@ func NewPostgresRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo 
 		DB:  conn,
 	}
 }
-func NewTestingRepo(a *config.AppConfig) repository.DatabaseRepo {
+
+func NewTestingsRepo(a *config.AppConfig) repository.DatabaseRepo {
 	return &testDBRepo{
 		App: a,
 	}
